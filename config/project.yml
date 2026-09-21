@@ -1,0 +1,6 @@
+name: Swiss Rail Observatory
+study_days: 90
+arrival_threshold_seconds: 180
+minimum_group_arrivals: 100
+# Explicit regional proxies, not on-platform instruments or a nationwide nearest-station claim.
+weather_stations: [SMA, BER, BAS, PUY, GVE, LUZ, KLO, STG]

@@ -1,0 +1,16 @@
+{
+  "name": "Swiss Rail Observatory",
+  "dataColors": ["#B82332", "#233F60", "#287D72", "#B57822", "#6E6499", "#6D91AB"],
+  "background": "#FFFFFF",
+  "foreground": "#152337",
+  "tableAccent": "#B82332",
+  "good": "#287D72",
+  "neutral": "#B57822",
+  "bad": "#B82332",
+  "textClasses": {
+    "label": {"fontFace": "Segoe UI", "fontSize": 11, "color": "#35465A"},
+    "title": {"fontFace": "Segoe UI Semibold", "fontSize": 15, "color": "#152337"},
+    "callout": {"fontFace": "Segoe UI Semibold", "fontSize": 32, "color": "#152337"},
+    "header": {"fontFace": "Segoe UI", "fontSize": 12, "color": "#152337"}
+  }
+}

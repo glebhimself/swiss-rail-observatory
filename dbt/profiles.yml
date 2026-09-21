@@ -1,0 +1,10 @@
+swiss_rail:
+  target: local
+  outputs:
+    local:
+      type: duckdb
+      path: "{{ env_var('RAIL_DB', '../data/demo/warehouse.duckdb') }}"
+      schema: analytics
+      threads: 2
+      settings:
+        TimeZone: UTC

@@ -1,0 +1,7 @@
+services:
+  warehouse:
+    build: .
+    volumes:
+      - ./data:/app/data
+      - ./exports:/app/exports
+    command: [demo]

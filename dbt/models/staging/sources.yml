@@ -1,0 +1,15 @@
+version: 2
+sources:
+  - name: raw
+    schema: raw
+    tables:
+      - name: transport
+        description: Selected rail stop events, with source lineage and timestamp quality flags.
+      - name: weather
+        description: Official hourly weather values; timestamp is interval end in UTC.
+      - name: weather_metadata
+        description: STAC station metadata, or explicitly synthetic metadata in demo mode.
+      - name: ingestion_log
+        description: Atomically recorded successful source loads, with checksums and counts.
+      - name: rejections
+        description: Selected input rows which could not be parsed.

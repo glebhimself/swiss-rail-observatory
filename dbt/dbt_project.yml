@@ -1,0 +1,27 @@
+name: swiss_rail
+version: '1.0.0'
+config-version: 2
+profile: swiss_rail
+model-paths: [models]
+seed-paths: [seeds]
+test-paths: [tests]
+analysis-paths: [analyses]
+macro-paths: [macros]
+clean-targets: [target, dbt_packages]
+vars:
+  arrival_threshold_seconds: 180
+  minimum_group_arrivals: 100
+models:
+  swiss_rail:
+    staging:
+      +materialized: view
+    marts:
+      +materialized: table
+seeds:
+  swiss_rail:
+    stations:
+      +column_types:
+        station_id: varchar
+        weather_station_id: varchar
+        latitude: double
+        longitude: double

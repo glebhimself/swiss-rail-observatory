@@ -1,0 +1,67 @@
+// Create each measure separately using Modeling > New measure.
+// These formulas assume the table names match the supplied Power Query queries.
+
+Stop events = COUNTROWS ( fct_stop_event )
+
+Scheduled stops =
+CALCULATE ( [Stop events], KEEPFILTERS ( fct_stop_event[is_scheduled_stop] = TRUE () ) )
+
+Cancelled stops =
+CALCULATE (
+    [Scheduled stops],
+    KEEPFILTERS ( fct_stop_event[is_cancelled] = TRUE () )
+)
+
+Cancellation rate = DIVIDE ( [Cancelled stops], [Scheduled stops] )
+
+Expected arrivals =
+CALCULATE ( [Stop events], KEEPFILTERS ( fct_stop_event[is_expected_arrival] = TRUE () ) )
+
+Eligible arrivals =
+CALCULATE ( [Stop events], KEEPFILTERS ( fct_stop_event[is_eligible_arrival] = TRUE () ) )
+
+On-time arrivals =
+CALCULATE ( [Eligible arrivals], KEEPFILTERS ( fct_stop_event[is_on_time] = TRUE () ) )
+
+On-time rate = DIVIDE ( [On-time arrivals], [Eligible arrivals] )
+
+Arrival coverage = DIVIDE ( [Eligible arrivals], [Expected arrivals] )
+
+Mean delay minutes =
+DIVIDE (
+    CALCULATE (
+        AVERAGE ( fct_stop_event[arrival_delay_seconds] ),
+        KEEPFILTERS ( fct_stop_event[is_eligible_arrival] = TRUE () )
+    ), 60
+)
+
+P90 delay minutes =
+VAR Arrivals = FILTER ( fct_stop_event, fct_stop_event[is_eligible_arrival] = TRUE () )
+RETURN IF (
+    COUNTROWS ( Arrivals ) > 0,
+    DIVIDE ( PERCENTILEX.INC ( Arrivals, fct_stop_event[arrival_delay_seconds], 0.9 ), 60 )
+)
+
+Measured arrivals =
+CALCULATE ( [Eligible arrivals], KEEPFILTERS ( fct_stop_event[is_measured_arrival] = TRUE () ) )
+
+Measured share = DIVIDE ( [Measured arrivals], [Eligible arrivals] )
+
+Measured-only on-time rate =
+CALCULATE ( [On-time rate], KEEPFILTERS ( fct_stop_event[is_measured_arrival] = TRUE () ) )
+
+Arrivals with precipitation =
+CALCULATE (
+    [Eligible arrivals],
+    KEEPFILTERS ( NOT ISBLANK ( fct_stop_event[precipitation_mm] ) )
+)
+
+Weather coverage = DIVIDE ( [Arrivals with precipitation], [Eligible arrivals] )
+
+Operating days = DISTINCTCOUNT ( fct_stop_event[operating_date] )
+
+Sample note =
+IF ( [Eligible arrivals] < 100, "Fewer than 100 arrivals; interpret cautiously", "" )
+
+On-time rate for ranking =
+IF ( [Eligible arrivals] >= 100, [On-time rate] )

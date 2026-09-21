@@ -1,0 +1,70 @@
+version: 2
+seeds:
+  - name: stations
+    description: Eight curated railway hubs and regional weather proxies; rail coordinates approximate.
+    columns:
+      - name: station_id
+        data_tests: [unique, not_null]
+models:
+  - name: dim_station
+    description: One selected railway station, including distance to its weather proxy.
+    columns:
+      - name: station_id
+        data_tests: [unique, not_null]
+  - name: dim_operator
+    columns:
+      - name: operator_id
+        data_tests: [unique, not_null]
+  - name: dim_service
+    columns:
+      - name: service_id
+        data_tests: [unique, not_null]
+  - name: dim_date
+    columns:
+      - name: date_id
+        data_tests: [unique, not_null]
+  - name: dim_hour
+    columns:
+      - name: hour_number
+        data_tests: [unique, not_null]
+  - name: stg_transport
+    columns:
+      - name: event_id
+        data_tests: [unique, not_null]
+  - name: fct_stop_event
+    description: One journey visit to one selected rail station per operating day; weather is a regional proxy.
+    columns:
+      - name: event_id
+        description: Stable hash of operating day, journey, operator, station and scheduled times.
+        data_tests: [unique, not_null]
+      - name: station_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments: {to: "ref('dim_station')", field: station_id}
+      - name: operator_id
+        data_tests:
+          - relationships:
+              arguments: {to: "ref('dim_operator')", field: operator_id}
+      - name: service_id
+        data_tests:
+          - relationships:
+              arguments: {to: "ref('dim_service')", field: service_id}
+      - name: operating_date
+        data_tests:
+          - not_null
+          - relationships:
+              arguments: {to: "ref('dim_date')", field: date_id}
+      - name: hour_number
+        data_tests:
+          - relationships:
+              arguments: {to: "ref('dim_hour')", field: hour_number}
+      - name: arrival_status
+        description: REAL, PROGNOSE, GESCHAETZT or UNBEKANNT. Unknown future statuses are retained and excluded.
+      - name: is_eligible_arrival
+        description: Scheduled, operating stop with valid comparable times and supported arrival status.
+        data_tests: [not_null]
+      - name: precipitation_band
+        data_tests:
+          - accepted_values:
+              arguments: {values: ['Unknown', 'Dry', 'Light precipitation', 'Wet']}

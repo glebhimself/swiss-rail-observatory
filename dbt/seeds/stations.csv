@@ -1,0 +1,9 @@
+station_id,station_name,canton,latitude,longitude,weather_station_id,mapping_note
+8503000,Zürich HB,ZH,47.3782,8.5402,SMA,Regional proxy Zürich Fluntern; elevated above the station
+8507000,Bern,BE,46.9492,7.4391,BER,Regional proxy Bern Zollikofen; outside city centre
+8500010,Basel SBB,BS,47.5474,7.5896,BAS,Regional proxy Basel Binningen
+8501120,Lausanne,VD,46.5168,6.6291,PUY,Regional proxy Pully; lakeside conditions
+8501008,Genève,GE,46.2102,6.1424,GVE,Regional proxy Genève Cointrin; airport exposure
+8505000,Luzern,LU,47.0502,8.3102,LUZ,Regional proxy Luzern
+8506000,Winterthur,ZH,47.5000,8.7233,KLO,Regional proxy Zürich Kloten; airport exposure
+8506302,St. Gallen,SG,47.4233,9.3697,STG,Regional proxy St. Gallen
